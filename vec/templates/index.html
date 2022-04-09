@@ -19,22 +19,60 @@
 	<link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
+    
 
 	<div class="container mt-5">
 
         <div class="dropdown">
             <button class="dropdown-toggle" data-easy-toggle="#dropdown" data-easy-class="show" data-easy-recoe>Выбрать файл</button>
-            
-            <div id="dropdown" class="dropdown-menu">
-                <h4 class="dropdown-link">1 link</h4>
-                <h4 lass="dropdown-link">2link</h4>
-                <h4 lass="dropdown-link">3link</h4>
-            </div>
+            <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="dropdown" class="dropdown-menu">
+                    <input type="file" id="file" name="file" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                    <input type="submit" id="wordvec" value="Word2Vec" name="_wordvec">
+                    <input type="submit" id="tfidfvectorizer" value="TfidfVectorizer" name="_tfidfvectorizer">
+                    <input type="submit" id="countvectorizer" value="CountVectorizer" name="_countvectorizer">
+                </div>
+            </form>
         </div>
 
     </div>
+    <div>
+        <canvas id="myChart" width="600px" height="400px">
+
+        </canvas>
+    </div>
+
     <script src="{% static 'js/style.js' %}"></script>
-	
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        
+	<script>
+        let ctx = document.querySelector('#myChart').getContext('2d');
+        ctx.canvas.parentNode.style.height = '600px';
+        ctx.canvas.parentNode.style.width = '1000px';
+        let myChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                labels: {{x}},
+                datasets: [{
+                    label: ' ',
+                    data: {{y}},
+                    backgroundColor: [
+                        'white'
+                    ],
+                    borderColor: {% autoescape off %} {{coloors}} {% endautoescape %},
+                    borderWidth: 5,
+                }],
+                
+            },
+            options: {
+                maintainAspectRatio: false,
+            },
+        })
+    </script>
+    
+    
 </body>
 </html>
 
