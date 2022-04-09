@@ -1,3 +1,4 @@
+import os
 import csv
 import pyexcel
 from io import TextIOWrapper
@@ -19,6 +20,7 @@ def index(request):
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             list_data = pyexcel.get_array(file_name=MEDIA_ROOT + '/' + filename)
+            os.remove(MEDIA_ROOT + '/' + filename)
         else:
             myfile = TextIOWrapper(request.FILES['file'].file,
                                     encoding=request.encoding)
