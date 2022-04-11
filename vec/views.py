@@ -32,11 +32,18 @@ def index(request):
             list_data = tfid_vectorizer(list_data)
         elif '_countvectorizer' in request.POST:
             list_data = count_vectorizer(list_data)
-        x = [i[3][0] for i in list_data]
-        y = [i[3][1] for i in list_data]
-        colors = [i[4] for i in list_data]
-        context = {'x':x,'y':y,'coloors':colors}
-        return render(request,'index.html', context)
+        points = []
+        for i in list_data:
+            points.append({
+                'x': i[3][0],
+                'y': i[3][1],
+                'label': i[0] + ' || ' + i[1] + ' || ' + i[2],
+                'color': i[4]
+            })
+        context = {
+            'points': points
+        }
+        return render(request, 'index.html', context)
 
 
 
